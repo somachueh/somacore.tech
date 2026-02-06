@@ -4,105 +4,413 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>索瑪核心技研 | Soma Core Tech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
+        /* --- 全局設定 --- */
+        :root {
+            --primary-bg: #002366;      /* 品牌深藍 */
+            --secondary-bg: #001a4d;    /* 更深的藍 (區塊交替用) */
+            --accent-color: #00FFFF;    /* 科技青 (強調色) */
+            --text-color: #ffffff;
+            --text-muted: #b3b3b3;
+        }
+
         body {
             margin: 0;
             padding: 0;
-            background-color: #002366; /* 名片同款深藍色 */
-            color: white;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; padding: 0; }
+
+        /* --- 導覽列 (Navbar) --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 35, 102, 0.95); /* 半透明深藍 */
+            padding: 15px 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+        }
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .nav-logo { font-weight: bold; font-size: 1.2rem; color: var(--accent-color); }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { 
+            font-size: 0.9rem; 
+            transition: color 0.3s; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .nav-links a:hover { color: var(--accent-color); }
+
+        /* --- 通用區塊設定 --- */
+        section {
+            padding: 80px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-color);
+            margin: 15px auto 0;
+        }
+
+        /* --- 1. 首頁 Hero 區塊 --- */
+        #home {
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            text-align: center;
+            background: radial-gradient(circle at center, #003380 0%, #002366 100%);
+        }
+        .logo-img {
+            width: 160px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.5));
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .hero-title { font-size: 3rem; margin: 10px 0; letter-spacing: 2px; }
+        .hero-subtitle { font-size: 1.2rem; color: var(--text-muted); font-weight: 300; }
+        .hero-slogan {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            font-size: 1.8rem;
+            margin-top: 40px;
+            padding: 20px 40px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* --- 2. 個人簡介 About --- */
+        #about { background-color: var(--secondary-bg); } /* 深淺交替背景 */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap; /* 手機版自動換行 */
+        }
+        .profile-img-container {
+            flex: 1;
+            min-width: 300px;
             text-align: center;
         }
-        .container {
-            padding: 20px;
-            max-width: 600px;
+        .profile-img {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%; /* 圓形頭像 */
+            object-fit: cover;
+            border: 3px solid var(--accent-color);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
         }
-        
-        /* --- 修改重點：Logo 圖片樣式 --- */
-        .logo-img {
-            width: 150px; /* 設定圖片寬度，可依需求調整 */
-            height: auto;
-            margin-bottom: 20px;
-            /* 讓 Logo 有一點點科技光暈 */
-            filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.6)); 
-            animation: pulse 3s infinite alternate; /* 增加呼吸燈效果 */
-        }
+        .bio-text { flex: 2; min-width: 300px; }
+        .bio-text h3 { color: var(--accent-color); margin-bottom: 10px; }
 
-        @keyframes pulse {
-            from { filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.4)); }
-            to { filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.9)); }
+        /* --- 3. 專長領域 Skills --- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
         }
-        /* --------------------------- */
+        .skill-box {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-color);
+        }
+        .skill-box h3 { margin-top: 0; color: var(--accent-color); }
+        .skill-list li { margin-bottom: 10px; display: flex; align-items: center; }
+        .skill-list i { margin-right: 10px; color: var(--accent-color); font-size: 0.8rem; }
 
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 5px;
-            letter-spacing: 2px;
-            font-weight: bold;
+        /* --- 4. 學經歷 Timeline --- */
+        #experience { background-color: var(--secondary-bg); }
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
         }
-        h2 {
-            font-size: 1rem;
-            color: #cccccc;
-            font-weight: 300;
+        /* 中間的線 */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0; /* 手機版靠左，電腦版可改置中 */
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(0, 255, 255, 0.3);
+        }
+        .timeline-item {
+            position: relative;
             margin-bottom: 40px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            padding-left: 30px;
         }
-        .slogan {
-            font-family: 'Times New Roman', Times, serif; /* 名片同款襯線體 */
-            font-style: italic; /* 斜體 */
-            font-size: 1.8rem;
-            margin-bottom: 50px;
-            padding: 30px 0;
-            border-top: 1px solid rgba(255,255,255,0.15);
-            border-bottom: 1px solid rgba(255,255,255,0.15);
+        /* 時間點圓點 */
+        .timeline-dot {
+            position: absolute;
+            left: -6px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-color);
         }
-        .contact-info {
-            font-size: 0.95rem;
-            line-height: 2;
-            color: #e0e0e0;
+        .timeline-date { font-size: 0.9rem; color: var(--accent-color); font-weight: bold; }
+        .timeline-title { font-size: 1.2rem; margin: 5px 0; }
+        .timeline-company { font-size: 1rem; color: #ccc; font-style: italic; }
+        .timeline-desc { font-size: 0.9rem; color: var(--text-muted); margin-top: 10px; }
+
+        /* --- 5. 作品集 Portfolio --- */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
-        .contact-info a {
-            color: #00FFFF;
-            text-decoration: none;
-            transition: color 0.3s;
+        .portfolio-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .contact-info a:hover {
-            color: #ffffff;
+        .portfolio-card:hover { transform: translateY(-5px); border-color: var(--accent-color); }
+        .portfolio-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover; /* 讓圖片填滿不變形 */
+            background-color: #000; /* 圖片載入前的底色 */
         }
+        .portfolio-info { padding: 20px; }
+        .portfolio-info h3 { margin: 0 0 10px 0; color: #fff; }
+        .portfolio-info p { font-size: 0.9rem; color: var(--text-muted); }
+        .tag {
+            display: inline-block;
+            background: rgba(0, 255, 255, 0.1);
+            color: var(--accent-color);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-top: 10px;
+        }
+
+        /* --- Footer --- */
         footer {
-            margin-top: 60px;
-            font-size: 0.75rem;
+            text-align: center;
+            padding: 40px 20px;
+            background: #000;
+            font-size: 0.9rem;
             color: #666;
+            border-top: 1px solid #111;
+        }
+
+        /* --- 手機版調整 --- */
+        @media (max-width: 768px) {
+            .skills-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2rem; }
+            .nav-links { display: none; } /* 暫時隱藏手機版選單，保持簡潔 */
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="logo.png" class="logo-img" alt="Soma Core Tech Logo">
-        
-        <h1>索瑪核心技研</h1>
-        <h2>Soma Core Tech Co., Ltd.</h2>
 
-        <div class="slogan">
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">⬢ SOMA CORE TECH</div>
+            <div class="nav-links">
+                <a href="#about">關於我</a>
+                <a href="#skills">核心專長</a>
+                <a href="#experience">學經歷</a>
+                <a href="#portfolio">專案作品</a>
+                <a href="mailto:soma.chueh@gmail.com" style="color:var(--accent-color)">聯絡我</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home">
+        <img src="logo.png" class="logo-img" alt="Soma Core Tech Logo">
+        <h1 class="hero-title">索瑪核心技研</h1>
+        <div class="hero-subtitle">Soma Core Tech Co., Ltd.</div>
+
+        <div class="hero-slogan">
             See it. Own it. Solve it.
         </div>
+        
+        <p style="margin-top:30px; color:#aaa;">Technical Director: Soma Chueh</p>
+    </section>
 
-        <div class="contact-info">
-            <p>Technical Director: <strong>Soma Chueh</strong></p>
-            <p>Email: <a href="mailto:soma.chueh@gmail.com">soma.chueh@gmail.com</a></p>
-            <p style="margin-top: 20px; color: #888;">官方網站建置中 | Website Coming Soon</p>
+    <section id="about">
+        <h2 class="section-title">關於我 | About Me</h2>
+        <div class="about-content">
+            <div class="profile-img-container">
+                <img src="profile.jpg" class="profile-img" alt="Soma Chueh">
+            </div>
+            <div class="bio-text">
+                <h3>Technical Director | 20年半導體設備與系統整合專家</h3>
+                <p>
+                    擁有 20 年半導體設備深厚資歷，專精於 PVD、CVD、Grinding、Implanter 製程設備。
+                    不只懂硬體維修，更具備<strong>軟硬體整合 (Full-Stack Equipment Engineer)</strong> 開發能力。
+                </p>
+                <p>
+                    我致力於將傳統半導體設備導入 <strong>工業 4.0</strong>，透過 PLC 自動化控制、Python 數據分析與 Web 可視化儀表板，
+                    為企業實現「設備預防性維護」與「生產效率最佳化」。
+                </p>
+                <p style="margin-top: 20px; font-style: italic; color: var(--accent-color);">
+                    "Turning Complex Problems into Intelligent Solutions."
+                </p>
+            </div>
         </div>
+    </section>
 
-        <footer>
-            &copy; 2026 Soma Core Tech Co., Ltd. All Rights Reserved.
-        </footer>
-    </div>
+    <section id="skills">
+        <h2 class="section-title">核心專長 | Core Competencies</h2>
+        <div class="skills-grid">
+            <div class="skill-box">
+                <h3><i class="fas fa-microchip"></i> 硬體與製程技術</h3>
+                <ul class="skill-list">
+                    <li><i class="fas fa-check"></i> 半導體設備精通 (PVD、CVD、Grinding、Implanter)</li>
+                    <li><i class="fas fa-check"></i> 真空系統診斷 (Cryo/Turbo/Dry Pump)</li>
+                    <li><i class="fas fa-check"></i> 自動化控制 (Mitsubishi / Keyence PLC)</li>
+                    <li><i class="fas fa-check"></i> 機台移機與裝機 (Move-in & Set-up)</li>
+                    <li><i class="fas fa-check"></i> 設備改善 (CIP) : MTBF 提升 </li>
+                </ul>
+            </div>
+            <div class="skill-box">
+                <h3><i class="fas fa-code"></i> 軟體與系統開發</h3>
+                <ul class="skill-list">
+                    <li><i class="fas fa-check"></i> 程式語言: Python, C++, HTML, GAS (Google Apps Script)</li>
+                    <li><i class="fas fa-check"></i> 資料庫: MS Access, SQL</li>
+                    <li><i class="fas fa-check"></i> 電路設計: PCB Layout (Protel/OrCAD)</li>
+                    <li><i class="fas fa-check"></i> 數據可視化: Manufacturing Dashboard Design</li>
+                    <li><i class="fas fa-check"></i> AI 異常預警系統開發</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <h2 class="section-title">經歷 | Experience</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">2026 - Present</div>
+                <h3 class="timeline-title">技術總監 Technical Director</h3>
+                <div class="timeline-company">索瑪核心技研 (Soma Core Tech)</div>
+                <div class="timeline-desc">
+                    專注於半導體設備智慧化解決方案，提供 AI 異常預警、PLC 邏輯優化與客製化儀表板開發服務。
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">2024 - 2025</div>
+                <h3 class="timeline-title">技術經理/薄膜設備主管</h3>
+                <div class="timeline-company">積亞半導體 (PASC)</div>
+                <div class="timeline-desc">
+                    領導 PVD/CVD 團隊，導入數位化交接系統，提升工作效率 50%。負責設備故障排除與 Root Cause Analysis。
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">2023 - 2024</div>
+                <h3 class="timeline-title">設備部經理</h3>
+                <div class="timeline-company">台亞半導體 (TASC)</div>
+                <div class="timeline-desc">
+                    負責 SiC/GaN 產線建置 (Mini-line setup)，管理 60 人團隊，推動成本降低專案 (Cost Down)。
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">2021 - 2023</div>
+                <h3 class="timeline-title">設備副理</h3>
+                <div class="timeline-company">宜錦科技 (ProPowerTek)</div>
+                <div class="timeline-desc">
+                    負責 PVD/Etch/Photo 黃光設備可靠度改善。降低機台重複故障率 >40%，年度節省成本超過 100 萬台幣。
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">2006 - 2021</div>
+                <h3 class="timeline-title">專案副理 (Project Assistant Manager)</h3>
+                <div class="timeline-company">漢磊科技 (EPISIL)</div>
+                <div class="timeline-desc">
+                    14年資歷，從工程師一路晉升。專精於設備自動化改善，多次獲得年度最佳 CIP 提案獎。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio">
+        <h2 class="section-title">專案作品 | Portfolio</h2>
+        <div class="portfolio-grid">
+            
+            <div class="portfolio-card">
+                <img src="project1.jpg" class="portfolio-img" alt="Access System">
+                <div class="portfolio-info">
+                    <h3>設備交接暨專案管理系統</h3>
+                    <p>解決傳統 Excel 管理不易痛點。使用 MS Access 開發，整合交接、零件庫存與專案追蹤功能。實現無紙化，效率提升 50%。</p>
+                    <span class="tag">MS Access</span>
+                    <span class="tag">VBA</span>
+                    <span class="tag">SQL</span>
+                </div>
+            </div>
+
+            <div class="portfolio-card">
+                <img src="project2.jpg" class="portfolio-img" alt="Engineer Dashboard">
+                <div class="portfolio-info">
+                    <h3>工程師日誌儀表板</h3>
+                    <p>基於 Web (HTML/GAS) 的視覺化儀表板。實時呈現部門維修狀況與個人績效，將抽象工時數據轉化為決策圖表。</p>
+                    <span class="tag">HTML</span>
+                    <span class="tag">Google Apps Script</span>
+                    <span class="tag">Data Viz</span>
+                </div>
+            </div>
+
+            <div class="portfolio-card">
+                <img src="project3.jpg" class="portfolio-img" alt="AI Prediction">
+                <div class="portfolio-info">
+                    <h3>SOMA AI 異常預警引擎</h3>
+                    <p>針對 PVD Heater/Pump 電流進行監控，建立 Baseline。成功預測設備異常，MTBF 提升 20%，減少非計畫性停機。</p>
+                    <span class="tag">Python</span>
+                    <span class="tag">PLC Integration</span>
+                    <span class="tag">IoT</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Soma Core Tech Co., Ltd. All Rights Reserved.</p>
+        <p>Designed by Soma Chueh | Powered by GitHub Pages</p>
+    </footer>
+
 </body>
 </html>
-
